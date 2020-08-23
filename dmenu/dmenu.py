@@ -65,7 +65,12 @@ def show(
         bottom=None,
         fast=None,
         case_insensitive=None,
+        centered=None,
+        height=None,
+        width=None,
+        columns=None,
         lines=None,
+        border=None,
         monitor=None,
         prompt=None,
         font=None,
@@ -81,6 +86,10 @@ def show(
         bottom (Optional[bool]): dmenu appears at the bottom of the screen.
         fast (Optional[bool]): dmenu grabs the keyboard before reading stdin. This is faster, but will lock up X until stdin reaches end-of-file.
         case_insensitive (Optional[bool]): dmenu matches menu items case insensitively.
+        centered (Optional[bool]): dmenu appears at the center of the screen.
+        height (Optional[int]): sets the height of the dmenu bar in pixels, can be no less than 8.
+        width (Optional[int]): sets the width of the dmenu bar in pixels, can be no less than 100.
+        columns (Optional[int]): dmenu lists items in columns, with the given number of columns.
         lines (Optional[int]): dmenu lists items vertically, with the given number of lines.
         monitor (Optional[int]): dmenu is displayed on the monitor number supplied. Monitor numbers are starting from 0.
         prompt (Optional[str]): defines the prompt to be displayed to the left of the input field.
@@ -146,8 +155,23 @@ def show(
     if case_insensitive:
         args.append('-i')
 
+    if centered:
+        args.append('-c')
+
+    if height is not None:
+        args.extend(('-wh', str(height)))
+
+    if width is not None:
+        args.extend(('-ww', str(width)))
+
     if lines is not None:
         args.extend(('-l', str(lines)))
+
+    if columns is not None:
+        args.extend(('-g', str(columns)))
+
+    if border is not None:
+        args.extend(('-bo', str(border)))
 
     if monitor is not None:
         args.extend(('-m', str(monitor)))
